@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: voucher_redis
+    command: >
+      redis-server
+      --appendonly no
+      --save ""
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+    networks:
+      - voucher_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  postgres:
+    build:
+      context: ./postgresql
+    container_name: voucher_postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: voucher
+    networks:
+      - voucher_net
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - voucher_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  meal-voucher:
+    build:
+      context: ./meal-voucher
+      dockerfile: Dockerfile
+    container_name: voucher_meal
+    networks:
+      - voucher_net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: "postgresql+asyncpg://admin:admin123@postgres:5432/meal_voucher"
+      REDIS_URL: "redis://redis:6379/1"
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: voucher_nginx
+    networks:
+      - voucher_net
+    restart: unless-stopped
+    ports:
+      - "80:80"
+
+networks:
+  voucher_net:
+    driver: bridge
+
+volumes:
+  voucher_postgres_data:
+
