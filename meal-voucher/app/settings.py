@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     sms_api_key: str
     sms_template: str
 
+    storage_path: str
+
     class Config:
         env_file = "../.env"
         env_file_encoding = "utf-8"

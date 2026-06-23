@@ -3,12 +3,12 @@ from auth.core.interfaces.auth_attempt_counter import IAttemptCounter
 
 
 class AttemptCounterStore(IAttemptCounter):
-    def __init__(self, redis: Redis, prefix: str = "attempt:"):
+    def __init__(self, redis: Redis):
         self.redis = redis
-        self.prefix = prefix
 
-    def _key(self, key: str) -> str:
-        return f"{self.prefix}{key}"
+    @staticmethod
+    def _key(key: str) -> str:
+        return f"auth:attempt:{key}"
 
     async def increment(self, key: str) -> int:
         return await self.redis.incr(self._key(key))

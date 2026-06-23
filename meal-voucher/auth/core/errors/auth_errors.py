@@ -12,3 +12,6 @@ class PhoneTemporarilyBlockedError(Exception):
 
 class InvalidVerificationCodeError(Exception):
     pass
+
+class InvalidRefreshToken(Exception):
+    pass

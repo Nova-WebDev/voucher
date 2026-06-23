@@ -55,6 +55,8 @@ services:
     environment:
       DATABASE_URL: "postgresql+asyncpg://admin:admin123@postgres:5432/meal_voucher"
       REDIS_URL: "redis://redis:6379/1"
+      SMS_API_KEY: "57616e313261555a53386e2f5745335a52703043424f6650364649597754314e325766724757574a6d77493d"
+      SMS_TEMPLATE: "login"
     restart: unless-stopped
 
   nginx:

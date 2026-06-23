@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-@dataclass(frozen=True)
+@dataclass
 class AuthSessionEntity:
     public_id: str
     phone_number: str

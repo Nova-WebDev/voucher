@@ -7,7 +7,7 @@ class MealPlan(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    date = Column(Date, nullable=False)
+    plan_date = Column(Date, nullable=False)
 
     meal_id = Column(
         Integer,
