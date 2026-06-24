@@ -7,10 +7,10 @@ class MealPlanRecurring(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    meal_plan_id = Column(
+    meal_id = Column(
         Integer,
-        ForeignKey("meal_plan.id", ondelete="CASCADE"),
-        nullable=False,
+        ForeignKey("meals.id", ondelete="CASCADE"),
+        nullable=True,
     )
 
     target_date = Column(Date, nullable=False)

@@ -57,6 +57,21 @@ services:
       REDIS_URL: "redis://redis:6379/1"
       SMS_API_KEY: "57616e313261555a53386e2f5745335a52703043424f6650364649597754314e325766724757574a6d77493d"
       SMS_TEMPLATE: "login"
+      STORAGE_PATH: "/meals/storage"
+      CRON_API_KEY: "nxas/8nwyKebL688Jpn3wzlooArw72QmG6jiv8dOIBiigPJnb6ZCEdKAwuVjcf0RWzsctymYqnGCMQSBo6bpyA=="
+    restart: unless-stopped
+
+  cron:
+    build:
+      context: ./cron
+    container_name: voucher_cron
+    networks:
+      - voucher_net
+    environment:
+      CRON_API_KEY: "nxas/8nwyKebL688Jpn3wzlooArw72QmG6jiv8dOIBiigPJnb6ZCEdKAwuVjcf0RWzsctymYqnGCMQSBo6bpyA=="
+    depends_on:
+      meal-voucher:
+        condition: service_started
     restart: unless-stopped
 
   nginx:

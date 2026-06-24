@@ -16,6 +16,6 @@ class MealPlan(Base):
     )
 
     __table_args__ = (
-        UniqueConstraint("date", "meal_id", name="uq_mealplan_date_meal"),
-        Index("idx_mealplan_date", "date"),
+        UniqueConstraint("plan_date", "meal_id", name="uq_mealplan_date_meal"),
+        Index("idx_mealplan_date", "plan_date"),
     )
