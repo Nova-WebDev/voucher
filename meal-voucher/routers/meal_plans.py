@@ -25,7 +25,7 @@ async def create_meal_plan(
         plan = await uc.execute(
             plan_date=plan_date,
             meal_id=meal_id,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
         return MealPlanItem(
             id=plan.id,
@@ -68,7 +68,7 @@ async def update_meal_plan(
         plan = await uc.execute(
             plan_id=plan_id,
             new_meal_id=meal_id,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
         return MealPlanItem(
             id=plan.id,
@@ -88,7 +88,7 @@ async def delete_meal_plan(
         uc = get_delete_meal_plan_uc(session)
         await uc.execute(
             plan_id=plan_id,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
         return {"status": "ok"}
     except Exception as e:

@@ -32,7 +32,7 @@ async def create_branch(
 ):
     try:
         uc = get_create_branch_uc(session)
-        branch = await uc.execute(role=_user.role, name=payload.name)
+        branch = await uc.execute(role=_user["role"], name=payload.name)
         return BranchItem(id=branch.id, name=branch.name)
     except Exception as e:
         raise map_error(e)
@@ -44,7 +44,7 @@ async def list_branches(
 ):
     try:
         uc = get_list_branches_uc(session)
-        branches = await uc.execute(role=_user.role)
+        branches = await uc.execute(role=_user["role"])
 
         return BranchListResponse(
             items=[BranchItem(id=b.id, name=b.name) for b in branches]
@@ -62,7 +62,7 @@ async def update_branch(
     try:
 
         uc = get_update_branch_uc(session)
-        branch = await uc.execute(role=_user.role, branch_id=payload.id, new_name=payload.name)
+        branch = await uc.execute(role=_user["role"], branch_id=payload.id, new_name=payload.name)
 
         return BranchItem(id=branch.id, name=branch.name)
 
@@ -77,7 +77,7 @@ async def delete_branch(
 ):
     try:
         uc = get_delete_branch_uc(session)
-        await uc.execute(role=_user.role, branch_id=payload.id)
+        await uc.execute(role=_user["role"], branch_id=payload.id)
 
         return {"success": True}
 

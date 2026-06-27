@@ -30,7 +30,7 @@ async def create_voucher(
         uc = get_create_voucher_uc(session)
 
         vouchers = await uc.execute(
-            user_public_ids=[_user.public_id],
+            user_public_ids=[_user["public_id"]],
             meal_plan_id=data.meal_plan_id,
         )
 
@@ -58,7 +58,7 @@ async def delete_voucher(
 
         await uc.execute(
             voucher_id=data.voucher_id,
-            user_public_id=_user.public_id,
+            user_public_id=_user["public_id"],
         )
 
         return {"status": "deleted"}
@@ -76,7 +76,7 @@ async def check_voucher_exists(
         uc = get_check_voucher_exists_uc(session)
 
         exists = await uc.execute(
-            user_public_id=_user.public_id,
+            user_public_id=_user["public_id"],
             meal_plan_id=data.meal_plan_id,
         )
 
@@ -95,7 +95,7 @@ async def get_branch_vouchers(
         uc = get_branch_vouchers_uc(session)
 
         vouchers = await uc.execute(
-            requester_public_id=_user.public_id,
+            requester_public_id=_user["public_id"],
             meal_plan_id=data.meal_plan_id,
         )
 
@@ -123,7 +123,7 @@ async def get_mealplan_vouchers_for_admin(
         uc = get_mealplan_vouchers_for_admin_uc(session)
 
         result = await uc.execute(
-            admin_role=_user.role,
+            admin_role=_user["role"],
             meal_plan_id=data.meal_plan_id,
         )
 
@@ -139,10 +139,10 @@ async def create_voucher_branch(
     session: AsyncSession = Depends(get_session),
 ):
     try:
-        if _user.role != 20:
+        if _user["role"] != 20:
             validate_uc = get_validate_branch_users_uc(session)
             await validate_uc.execute(
-                requester_public_id=_user.public_id,
+                requester_public_id=_user["public_id"],
                 target_public_ids=data.public_ids,
             )
 
@@ -173,10 +173,10 @@ async def delete_voucher_branch(
     session: AsyncSession = Depends(get_session),
 ):
     try:
-        if _user.role != 20:
+        if _user["role"] != 20:
             validate_uc = get_validate_branch_users_uc(session)
             await validate_uc.execute(
-                requester_public_id=_user.public_id,
+                requester_public_id=_user["public_id"],
                 target_public_ids=[data.public_id],
             )
 
@@ -202,7 +202,7 @@ async def voucher_report(
 ):
     try:
         check_branch_id_uc = get_check_branch_id_uc(session)
-        await check_branch_id_uc.execute(_user.public_id, branch_id, _user.role)
+        await check_branch_id_uc.execute(_user["public_id"], branch_id, _user["role"])
 
         uc = provide_build_voucher_report_usecase(session)
 

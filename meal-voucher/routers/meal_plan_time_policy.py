@@ -54,7 +54,7 @@ async def create_time_policy(
         uc = get_create_time_policy_uc(session)
 
         result = await uc.execute(
-            role=_user.role,
+            role=_user["role"],
             day_index=data.day_index,
             offset_days=data.offset_days,
             cutoff_time=data.cutoff_time,
@@ -80,7 +80,7 @@ async def update_time_policy(
         uc = get_update_time_policy_uc(session)
 
         result = await uc.execute(
-            role=_user.role,
+            role=_user["role"],
             day_index=data.day_index,
             offset_days=data.offset_days,
             cutoff_time=data.cutoff_time,
@@ -106,7 +106,7 @@ async def delete_time_policy(
         uc = get_delete_time_policy_uc(session)
 
         await uc.execute(
-            role=_user.role,
+            role=_user["role"],
             policy_id=policy_id,
         )
 

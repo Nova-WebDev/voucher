@@ -28,7 +28,7 @@ async def create_meal(
             title=title,
             description=description,
             file_bytes=file_bytes,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
 
         return MealItem(
@@ -91,7 +91,7 @@ async def toggle_meal_active(
         await uc.execute(
             meal_id=meal_id,
             is_active=is_active,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
         return {"status": "ok"}
     except Exception as e:
@@ -115,7 +115,7 @@ async def update_meal(
             title=title,
             description=description,
             file_bytes=file_bytes,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
 
         return MealItem(

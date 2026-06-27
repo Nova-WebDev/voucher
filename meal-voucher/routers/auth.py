@@ -68,7 +68,7 @@ async def verify_code(
 
     try:
         user_identity = await verify_code_uc.execute(
-            email=payload.phone_number,
+            phone=payload.phone_number,
             code=payload.code,
         )
 

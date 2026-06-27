@@ -24,7 +24,7 @@ async def insert_recurring_meal_plans(
 
         await uc.execute(
             mapping=body.mapping,
-            requester_role=_user.role,
+            requester_role=_user["role"],
         )
 
         return {"status": "ok"}
