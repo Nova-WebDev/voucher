@@ -26,3 +26,7 @@ class IMealPlanRecurringRepository(ABC):
     @abstractmethod
     async def update_target_date(self, row_id: int, new_date: date) -> None:
         pass
+
+    @abstractmethod
+    async def get_all(self) -> list[MealPlanRecurringEntity]:
+        pass

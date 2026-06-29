@@ -1,16 +1,30 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/Sidebar";
 import { Header } from "../components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    Promise.resolve().then(() => {
+      setIsOpen(false);
+    });
+  }, [location.pathname]);
+
   return (
     <div dir="rtl" className="flex">
-      <Sidebar  isOpen={isOpen}  setIsOpen={setIsOpen}/>
-      <div className="flex flex-col grow">
-        <Header  isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div className="grow">
+      <div>
+        <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+      </div>
+
+      <div className="flex flex-col h-screen min-w-0 grow">
+        <div className="bg-[#7A2400] dark:bg-[#0D1525]">
+          <Header isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
+
+        <div className="grow bg-[#F4F4F5] dark:bg-[#111C2E]">
           <Outlet />
         </div>
       </div>

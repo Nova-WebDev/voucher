@@ -111,7 +111,7 @@ async def get_users_paginated(
     search: str | None = None,
     order_by: str = "created_at",
     deorder: bool = False,
-    include_self: bool = False,
+    include_self: bool = True,
     _user=Depends(get_current_user),
     session: AsyncSession = Depends(get_session),
 ):

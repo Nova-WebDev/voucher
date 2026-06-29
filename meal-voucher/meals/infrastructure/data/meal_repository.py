@@ -42,3 +42,19 @@ class MealRepository(IMealRepository):
         meal = result.scalar_one()
         return MealEntity(meal.id, meal.title, meal.description, meal.img_id, meal.is_active)
 
+
+    async def list_all(self) -> list[MealEntity]:
+        stmt = select(Meal)
+        result = await self.session.execute(stmt)
+        meals = result.scalars().all()
+
+        return [
+            MealEntity(
+                m.id,
+                m.title,
+                m.description,
+                m.img_id,
+                m.is_active,
+            )
+            for m in meals
+        ]

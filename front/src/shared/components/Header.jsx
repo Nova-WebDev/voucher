@@ -20,14 +20,14 @@ export const Header = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
-      <div className="flex items-center justify-between px-6 py-4 bg-[#7A2400] border-b border-[#5a1a00] dark:bg-gray-900 dark:border-gray-700">
+      <div className="flex items-center justify-between px-6 py-4  border-b border-[#5a1a00]  dark:border-gray-700">
         <div className="flex items-center gap-3">
           <h1 className="hidden text-lg font-bold text-white md:block dark:text-gray-200">
             Hooman Holding
           </h1>
 
           <button
-            className="p-2 text-white md:hidden dark:text-gray-200"
+            className="text-xl text-white md:hidden dark:text-gray-200"
             onClick={() => setIsOpen(!isOpen)}
           >
             <FontAwesomeIcon icon={faBars} className="w-6 h-6" />
@@ -37,7 +37,7 @@ export const Header = ({ isOpen, setIsOpen }) => {
         <div className="flex items-center gap-5">
           <button
             onClick={toggleTheme}
-            className="flex items-center justify-center w-10 h-10 text-white transition rounded-full bg-white/20 dark:bg-gray-700 dark:text-gray-200 hover:bg-white/30 dark:hover:bg-gray-600"
+            className="flex items-center justify-center w-10 h-10 text-white transition rounded-full cursor-pointer bg-white/20 dark:bg-gray-700 dark:text-gray-200 hover:bg-white/30 dark:hover:bg-gray-600"
           >
             <FontAwesomeIcon
               icon={theme === "dark" ? faSun : faMoon}

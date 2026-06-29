@@ -9,6 +9,7 @@ from meals.core.use_cases.get_meal import GetMeal
 from meals.core.use_cases.get_meal_image import GetMealImage
 from meals.core.use_cases.toggle_meal_active import ToggleMealActive
 from meals.core.use_cases.update_meal import UpdateMeal
+from meals.core.use_cases.list_meals import ListMeals
 
 from meals.infrastructure.data.meal_repository import MealRepository
 
@@ -60,3 +61,8 @@ def get_update_meal_uc(session: AsyncSession) -> UpdateMeal:
         image_processor=image_processor,
         store=store,
     )
+
+
+def get_list_meals_uc(session):
+    repo = MealRepository(session)
+    return ListMeals(repo)

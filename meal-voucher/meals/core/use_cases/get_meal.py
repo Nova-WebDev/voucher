@@ -1,5 +1,3 @@
-# meals/core/use_cases/get_meal.py
-
 from meals.core.entities.meal_entity import MealEntity
 from meals.core.interfaces.meal_repository import IMealRepository
 from meals.core.interfaces.meal_store import IMealStore

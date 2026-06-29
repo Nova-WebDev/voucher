@@ -73,3 +73,17 @@ class MealPlanRecurringRepository(IMealPlanRecurringRepository):
             .values(target_date=new_date)
         )
         await self.session.execute(stmt)
+
+    async def get_all(self) -> list[MealPlanRecurringEntity]:
+        stmt = select(MealPlanRecurring).order_by(MealPlanRecurring.target_date.asc())
+        result = await self.session.execute(stmt)
+        rows = result.scalars().all()
+        return [
+            MealPlanRecurringEntity(
+                id=r.id,
+                meal_id=r.meal_id,
+                target_date=r.target_date,
+                order_index=r.order_index,
+            )
+            for r in rows
+        ]

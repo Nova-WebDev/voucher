@@ -6,7 +6,7 @@ from meal_plan_recurring.infrastructure.data.meal_plan_recurring_repository impo
 )
 from meal_plan_recurring.core.use_cases.insert_recurring_meal_plans import InsertRecurringMealPlans
 from meal_plan_recurring.core.use_cases.apply_recurring_meal_plans import ApplyRecurringMealPlans
-
+from meal_plan_recurring.core.use_cases.get_all import GetAllMealPlanRecurringUseCase
 
 
 def get_insert_recurring_meal_plans_uc(session: AsyncSession) -> InsertRecurringMealPlans:
@@ -24,3 +24,6 @@ def get_apply_recurring_meal_plans_uc(session: AsyncSession) -> ApplyRecurringMe
         meal_plan_repo=meal_plan_repo,
         recurring_repo=recurring_repo,
     )
+def get_get_all_meal_plan_recurring_uc(session: AsyncSession) -> GetAllMealPlanRecurringUseCase:
+    recurring_repo = MealPlanRecurringRepository(session)
+    return GetAllMealPlanRecurringUseCase(recurring_repo)

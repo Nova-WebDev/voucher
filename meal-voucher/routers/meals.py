@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import Response
 
-from di.meal_providers import get_create_meal_uc, get_get_meal_uc, get_get_meal_image_uc, get_toggle_meal_active_uc, get_update_meal_uc
+from di.meal_providers import get_create_meal_uc, get_get_meal_uc, get_get_meal_image_uc, get_toggle_meal_active_uc, get_update_meal_uc, get_list_meals_uc
 from app.data.db import get_session
 from schemas.meals.meal_item import MealItem
 from app.security.dependencies import get_current_user
@@ -125,5 +125,27 @@ async def update_meal(
             img_id=meal.img_id,
             is_active=meal.is_active,
         )
+    except Exception as e:
+        raise map_error(e)
+
+@router.get("/get-all", response_model=list[MealItem])
+async def list_meals(
+    _user=Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    try:
+        uc = get_list_meals_uc(session)
+        meals = await uc.execute()
+
+        return [
+            MealItem(
+                id=m.id,
+                title=m.title,
+                description=m.description,
+                img_id=m.img_id,
+                is_active=m.is_active,
+            )
+            for m in meals
+        ]
     except Exception as e:
         raise map_error(e)

@@ -13,7 +13,7 @@ export function updateMyName(newName) {
 }
 
 export function getUsersPaginated(params) {
-  return api.get("/user/paginated", { params });
+  return api.get("/user/paginated", { params }).then((res) => res.data);
 }
 
 export function getUsersByPublicIds(public_ids) {

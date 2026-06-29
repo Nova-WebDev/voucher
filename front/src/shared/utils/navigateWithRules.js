@@ -1,4 +1,3 @@
-
 export function navigateWithRules(navigate, targetUrl) {
   const currentUrl = window.location.pathname + window.location.search;
 
@@ -6,23 +5,12 @@ export function navigateWithRules(navigate, targetUrl) {
     currentUrl === "/auth" ||
     currentUrl.startsWith("/auth/");
 
-  const isRoot = currentUrl === "/";
-
   const url = new URL(targetUrl, window.location.origin);
 
-  const hasRedirect = url.searchParams.has("redirect");
-
-  if (isAuthRoute || isRoot) {
+  if (isAuthRoute) {
     navigate(url.pathname + url.search);
     return;
   }
 
-  if (hasRedirect) {
-    navigate(url.pathname + url.search);
-    return;
-  }
-
-  url.searchParams.set("redirect", currentUrl);
-
-  navigate(url.pathname + url.search);
+  navigate(targetUrl);
 }

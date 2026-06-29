@@ -32,3 +32,7 @@ class IMealRepository(ABC):
         img_id: str | None,
     ) -> MealEntity:
         pass
+
+    @abstractmethod
+    async def list_all(self) -> list[MealEntity]:
+        pass

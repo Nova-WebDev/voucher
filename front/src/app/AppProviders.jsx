@@ -8,7 +8,6 @@ import { useUserStore } from "../auth/store/useUserStore";
 import { useRefreshToken } from "../auth/hooks/useRefreshToken";
 import { refreshTokens } from "../auth/actions/refreshTokens";
 import { redirectWithRules } from "../shared/utils/redirectWithRules";
-import { navigateWithRules } from "../shared/utils/navigateWithRules";
 
 export default function AppProviders({ children }) {
   const navigate = useNavigate();
@@ -82,18 +81,21 @@ export default function AppProviders({ children }) {
     });
   }, [path]);
 
-useEffect(() => {
-  const refresh_token = localStorage.getItem("refresh_token");
+  useEffect(() => {
+    if (!isReady) return;
 
-  if (isReady) {
+    const refresh_token = localStorage.getItem("refresh_token");
+
     if (refresh_token) {
-      navigateWithRules(navigateRef.current, "/");
-    } else if (!path.startsWith("/auth")) {
-      redirectWithRules("/auth/phone");
+      if (path.startsWith("/auth")) {
+        navigateRef.current("/");
+      }
+    } else {
+      if (!path.startsWith("/auth")) {
+        redirectWithRules("/auth/phone");
+      }
     }
-  }
-}, [isReady, path]);
-
+  }, [isReady, path]);
 
   if (!isReady) {
     return <Loader />;
