@@ -1,4 +1,4 @@
-import { useBranchStore } from "../../branch/store/branchStore";
+import { BranchNameCell, BranchRoleCell } from "./BranchCells";
 
 export const userColumns = [
   {
@@ -35,29 +35,17 @@ export const userColumns = [
   {
     label: "گروه",
     orderBy: "branch_id",
-    render: (row) => {
-      const { branches, isSet } = useBranchStore.getState();
-
-      if (!isSet) return "—";
-
-      const name = branches[row.branch_id];
-      return name ?? "—";
-    },
+    render: (row) => <BranchNameCell branchId={row.branch_id} />,
   },
 
   {
     label: "نقش کاربر در گروه",
     orderBy: "branch_role",
-    render: (row) => {
-      const { branches, isSet } = useBranchStore.getState();
-
-      if (!isSet) return "—";
-
-      const groupName = branches[row.branch_id];
-
-      if (!groupName) return "—";
-
-      return row.branch_role === 20 ? "Leader" : "Member";
-    },
+    render: (row) => (
+      <BranchRoleCell
+        branchId={row.branch_id}
+        branchRole={row.branch_role}
+      />
+    ),
   },
 ];

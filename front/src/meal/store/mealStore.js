@@ -27,6 +27,17 @@ export const useMealStore = create((set, get) => ({
     });
   },
 
+  updateMeal(updated) {
+    const current = get().meals;
+
+    set({
+      meals: {
+        ...current,
+        [updated.id]: updated,
+      },
+    });
+  },
+
   clearMeals() {
     set({
       meals: {},

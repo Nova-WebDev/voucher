@@ -13,6 +13,7 @@ class MealRepository(IMealRepository):
         meal = Meal(title=title, description=description, img_id=img_id, is_active=True)
         self.session.add(meal)
         await self.session.flush()
+        await self.session.commit()
         return MealEntity(meal.id, meal.title, meal.description, meal.img_id, meal.is_active)
 
     async def get_by_id(self, meal_id: int) -> MealEntity | None:
@@ -30,6 +31,7 @@ class MealRepository(IMealRepository):
             .values(is_active=is_active)
         )
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def update(self, meal_id: int, title: str, description: str | None, img_id: str | None) -> MealEntity:
         stmt = (
@@ -40,8 +42,8 @@ class MealRepository(IMealRepository):
         )
         result = await self.session.execute(stmt)
         meal = result.scalar_one()
+        await self.session.commit()
         return MealEntity(meal.id, meal.title, meal.description, meal.img_id, meal.is_active)
-
 
     async def list_all(self) -> list[MealEntity]:
         stmt = select(Meal)

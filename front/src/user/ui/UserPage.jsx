@@ -24,7 +24,7 @@ export const UserPage = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
   return (
-    <div className="h-full p-5 overflow-y-auto">
+    <div className="h-full p-5">
       <UserHeader branches={branches} />
 
       <Table

@@ -73,7 +73,7 @@ export default function ProfileDropdown({ open, setOpen, openEditModal }) {
   return (
     <div
       ref={dropdownRef}
-      className="absolute z-50 mt-3 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-xl w-44 -right-13 dark:bg-gray-800 dark:border-gray-700"
+      className="absolute z-50 mt-3 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-xl w-44 -right-22 dark:bg-gray-800 dark:border-gray-700"
     >
       <div
         className="flex items-center gap-2 px-4 pt-2 pb-3 text-gray-700 transition cursor-pointer dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
