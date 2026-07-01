@@ -16,6 +16,7 @@ class MealPlanRecurringRepository(IMealPlanRecurringRepository):
     async def clear_all(self) -> None:
         stmt = delete(MealPlanRecurring)
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def insert_many(self, rows: Iterable[MealPlanRecurringEntity]) -> None:
         values = [
@@ -28,6 +29,7 @@ class MealPlanRecurringRepository(IMealPlanRecurringRepository):
         ]
         stmt = insert(MealPlanRecurring)
         await self.session.execute(stmt, values)
+        await self.session.commit()
 
     async def list_between(self, start_date: date, end_date: date) -> list[MealPlanRecurringEntity]:
         stmt = select(MealPlanRecurring).where(
@@ -73,6 +75,7 @@ class MealPlanRecurringRepository(IMealPlanRecurringRepository):
             .values(target_date=new_date)
         )
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def get_all(self) -> list[MealPlanRecurringEntity]:
         stmt = select(MealPlanRecurring).order_by(MealPlanRecurring.target_date.asc())

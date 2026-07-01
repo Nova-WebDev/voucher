@@ -15,6 +15,7 @@ class MealPlanRepository(IMealPlanRepository):
         plan = MealPlan(plan_date=plan_date, meal_id=meal_id)
         self.session.add(plan)
         await self.session.flush()
+        await self.session.commit()
         return MealPlanEntity(id=plan.id, plan_date=plan.plan_date, meal_id=plan.meal_id)
 
     async def get_by_date_and_meal(self, plan_date: date, meal_id: int) -> MealPlanEntity | None:
@@ -49,6 +50,7 @@ class MealPlanRepository(IMealPlanRepository):
         )
         result = await self.session.execute(stmt)
         row = result.scalar_one()
+        await self.session.commit()
         return MealPlanEntity(id=row.id, plan_date=row.plan_date, meal_id=row.meal_id)
 
     async def get_by_id(self, plan_id: int) -> MealPlanEntity | None:
@@ -63,6 +65,8 @@ class MealPlanRepository(IMealPlanRepository):
             meal_id=row.meal_id,
         )
 
+
     async def delete(self, plan_id: int) -> None:
         stmt = delete(MealPlan).where(MealPlan.id == plan_id)
         await self.session.execute(stmt)
+        await self.session.commit()

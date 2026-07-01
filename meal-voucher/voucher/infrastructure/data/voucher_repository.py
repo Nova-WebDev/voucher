@@ -7,8 +7,8 @@ from voucher.core.interfaces.voucher_repository import IVoucherRepository
 from voucher.infrastructure.data.models import Voucher
 from meal_plans.infrastructure.data.models import MealPlan
 from meals.infrastructure.data.models import Meal
-
 from users.infrastructure.data.models import User
+
 
 class VoucherRepository(IVoucherRepository):
     def __init__(self, session: AsyncSession):
@@ -32,6 +32,8 @@ class VoucherRepository(IVoucherRepository):
         )
 
         result = await self.session.execute(stmt)
+        await self.session.commit()
+
         rows = result.fetchall()
 
         return [
@@ -59,6 +61,7 @@ class VoucherRepository(IVoucherRepository):
     async def delete_one(self, voucher_id: int) -> None:
         stmt = delete(Voucher).where(Voucher.id == voucher_id)
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def get_by_user_and_meal_plan(self, user_public_id: str, meal_plan_id: int) -> VoucherEntity | None:
         stmt = select(Voucher).where(
@@ -118,7 +121,6 @@ class VoucherRepository(IVoucherRepository):
             }
             for r in rows
         ]
-
 
     async def get_voucher_report_rows(self, meal_plan_id: int, branch_id: str | None):
         stmt = (

@@ -6,7 +6,7 @@ class CreateMealPlanTimePolicy:
     def __init__(self, repository: IMealPlanTimePolicyRepository):
         self.repository = repository
 
-    async def execute(self, *, role: int, day_index: int, offset_days: int, cutoff_time):
+    async def execute(self, role: int, day_index: int, offset_days: int, cutoff_time):
         if role != 20:
             raise PermissionError("ROLE_NOT_ALLOWED")
 
