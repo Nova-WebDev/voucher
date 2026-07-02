@@ -27,3 +27,7 @@ export function getMyProfile() {
 export function blockUser(data) {
   return api.put("/user/block", data);
 }
+
+export function getBranchTeam(data) {
+  return api.post("/user/branch-team", data).then((res) => res.data);
+}

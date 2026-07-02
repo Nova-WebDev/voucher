@@ -58,8 +58,14 @@ class VoucherRepository(IVoucherRepository):
             created_at=row.created_at,
         )
 
-    async def delete_one(self, voucher_id: int) -> None:
-        stmt = delete(Voucher).where(Voucher.id == voucher_id)
+    async def delete_many(self, meal_plan_id: int, public_ids: List[str]) -> None:
+        stmt = (
+            delete(Voucher)
+            .where(
+                Voucher.meal_plan_id == meal_plan_id,
+                Voucher.user_public_id.in_(public_ids),
+            )
+        )
         await self.session.execute(stmt)
         await self.session.commit()
 

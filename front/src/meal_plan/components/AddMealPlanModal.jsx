@@ -4,13 +4,13 @@ import ModalHeader from "./ModalHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useMealsData } from "../../meal/hooks/useMealsData";
-import { useUpdateMealPlan } from "../../meal_plan/hooks/useUpdateMealPlan";
+import { useCreateMealPlan } from "../../meal_plan/hooks/useCreateMealPlan";
 import { useMealPlanStore } from "../../meal_plan/store/mealPlanStore";
 
-export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
+export default function AddMealPlanModal({ date, onClose }) {
   const { meals, isLoading, error } = useMealsData();
-  const updateMutation = useUpdateMealPlan();
-  const updatePlanItem = useMealPlanStore((s) => s.updatePlanItem);
+  const createMutation = useCreateMealPlan();
+  const addPlanItem = useMealPlanStore((s) => s.addPlanItem);
 
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState(null);
@@ -18,7 +18,7 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
   const wrapperRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  const [selectedMealId, setSelectedMealId] = useState(meal_id);
+  const [selectedMealId, setSelectedMealId] = useState(null);
 
   const mealList = Object.values(meals || {}).filter((m) => m.is_active);
 
@@ -60,16 +60,12 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
   };
 
   const handleSubmit = async () => {
-    const updated = await updateMutation.mutateAsync({
-      plan_id: id,
+    const created = await createMutation.mutateAsync({
+      plan_date: date,
       meal_id: selectedMealId,
     });
 
-    updatePlanItem(date, id, {
-      id: updated.id,
-      plan_date: updated.plan_date,
-      meal_id: updated.meal_id,
-    });
+    addPlanItem(date, created);
 
     onClose();
   };
@@ -88,6 +84,18 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
             }}
             className="overflow-y-auto text-right bg-white border border-gray-300 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-600 max-h-60"
           >
+            <div
+              onClick={() => handleSelect(null)}
+              className={`
+                px-4 py-2 cursor-pointer 
+                hover:bg-gray-100 dark:hover:bg-gray-700
+                ${selectedMealId === null ? "bg-gray-200 dark:bg-gray-600" : ""}
+                text-gray-800 dark:text-gray-100 text-right
+              `}
+            >
+              انتخاب غذا...
+            </div>
+
             {isLoading && (
               <div className="px-4 py-2 text-gray-600 dark:text-gray-300">
                 در حال بارگذاری...
@@ -117,7 +125,7 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
                 </div>
               ))}
           </div>,
-          document.body,
+          document.body
         )
       : null;
 
@@ -127,7 +135,7 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
     >
       <div className="w-full max-w-md rounded-lg overflow-hidden shadow-xl bg-[#F4F4F5] dark:bg-[#0D1525] border border-gray-300 dark:border-gray-700">
-        <ModalHeader title="تغییر نوع غذا" onClose={onClose} />
+        <ModalHeader title="افزودن غذای جدید" onClose={onClose} />
 
         <div className="p-4 text-right text-gray-700 dark:text-gray-300">
           <div className="mb-6 font-semibold">
@@ -149,7 +157,7 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
               <span>
                 {selectedMealId
                   ? mealList.find((m) => m.id === selectedMealId)?.title
-                  : "در حال بارگذاری..."}
+                  : "انتخاب غذا..."}
               </span>
 
               <FontAwesomeIcon
@@ -171,11 +179,17 @@ export default function EditMealPlanModal({ id, date, meal_id, onClose }) {
           >
             بستن
           </button>
+
           <button
+            disabled={selectedMealId === null}
             onClick={handleSubmit}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+            className={`px-4 py-2 text-sm font-medium text-white rounded-md transition ${
+              selectedMealId === null
+                ? "bg-gray-400 cursor-not-allowed opacity-30"
+                : "bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800"
+            }`}
           >
-            ذخیره تغییرات
+            افزودن غذا
           </button>
         </div>
       </div>

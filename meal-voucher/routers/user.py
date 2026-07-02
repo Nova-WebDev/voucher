@@ -14,6 +14,7 @@ from di.user_providers import (
     get_users_paginated_uc,
     get_users_by_public_ids_uc,
     get_block_user_uc,
+    get_get_branch_team_uc,
 )
 
 from schemas.user.user_create import CreateUserRequest
@@ -23,6 +24,8 @@ from schemas.user.user_paginated import UsersPaginatedResponse
 from schemas.user.user_public_ids import UsersByPublicIdsRequest
 from schemas.user.user_block import BlockUserRequest
 from schemas.user.user_item import UserItem
+from schemas.user.get_branch_team import GetBranchTeamRequest, GetBranchTeamResponse
+
 
 
 router = APIRouter(prefix="/user", tags=["user"])
@@ -218,5 +221,23 @@ async def block_user(
         )
 
         return {"success": True}
+    except Exception as e:
+        raise map_error(e)
+
+@router.post("/branch-team", response_model=GetBranchTeamResponse)
+async def get_branch_team(
+    payload: GetBranchTeamRequest,
+    _user=Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    try:
+        uc = get_get_branch_team_uc(session)
+        public_ids = await uc.execute(
+            requester_public_id=_user["public_id"],
+            branch_id=payload.branch_id,
+        )
+
+        return GetBranchTeamResponse(public_ids=public_ids)
+
     except Exception as e:
         raise map_error(e)

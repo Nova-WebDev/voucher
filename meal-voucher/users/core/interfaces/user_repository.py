@@ -66,3 +66,7 @@ class IUserRepository(ABC):
     @abstractmethod
     async def set_block_status(self, public_id: str, is_blocked: bool) -> None:
         pass
+
+    @abstractmethod
+    async def get_by_branch_id(self, branch_id: str) -> List[UserEntity]:
+        pass

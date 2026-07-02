@@ -10,6 +10,8 @@ from users.core.use_cases.get_users_paginated import GetUsersPaginated
 from users.core.use_cases.block_user import BlockUser
 from users.core.use_cases.validate_branch_users import ValidateBranchUsers
 from users.core.use_cases.check_branch_id import CheckBranchId
+from users.core.use_cases.get_branch_team_uc import GetBranchTeamUseCase
+
 
 from users.infrastructure.data.user_repository import UserRepository
 
@@ -55,3 +57,8 @@ def get_validate_branch_users_uc(session: AsyncSession) -> ValidateBranchUsers:
 def get_check_branch_id_uc(session: AsyncSession) -> CheckBranchId:
     user_repo = UserRepository(session)
     return CheckBranchId(user_repo)
+
+
+def get_get_branch_team_uc(session: AsyncSession) -> GetBranchTeamUseCase:
+    user_repo = UserRepository(session)
+    return GetBranchTeamUseCase(user_repo)

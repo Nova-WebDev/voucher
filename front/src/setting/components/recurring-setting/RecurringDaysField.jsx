@@ -1,5 +1,4 @@
 export const RecurringDaysField = ({ daysCount, setDaysCount }) => {
-  console.log("📌 RecurringDaysField render:", { daysCount });
 
   return (
     <div className="mb-6">

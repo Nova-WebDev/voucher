@@ -6,6 +6,7 @@ import { useUpdateTimePolicy } from "../../meal_plan_time_policy/hooks/useUpdate
 import { useDeleteTimePolicy } from "../../meal_plan_time_policy/hooks/useDeleteTimePolicy";
 import { useMealPlanTimePolicyStore } from "../../meal_plan_time_policy/store/mealPlanTimePolicyStore";
 import { tehranToUtc, utcToTehran } from "../utils/time";
+import Swal from "sweetalert2";
 
 export const TimeSetting = () => {
   const { items, isLoading } = useTimePolicies();
@@ -124,6 +125,19 @@ export const TimeSetting = () => {
     }
 
     setItems(newItems);
+
+    const theme = localStorage.getItem("theme") || "light";
+    const isDark = theme === "dark";
+
+    Swal.fire({
+      icon: "success",
+      title: "تغییرات ذخیره شد",
+      text: "تنظیمات زمان‌بندی با موفقیت ثبت شد.",
+      timer: 1800,
+      showConfirmButton: false,
+      background: isDark ? "#111A2C" : "#E9EFFB",
+      color: isDark ? "#E9EFFB" : "#111A2C",
+    });
   };
 
   if (isLoading) {

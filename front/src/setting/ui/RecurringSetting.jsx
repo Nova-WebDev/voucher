@@ -3,6 +3,7 @@ import { RecurringDaysField } from "../components/recurring-setting/RecurringDay
 import { RecurringDayItem } from "../components/recurring-setting/RecurringDayItem";
 import { useRecurringMealPlans } from "../../meal_plan_recurring/hooks/useRecurringMealPlans";
 import { useInsertRecurringMealPlans } from "../../meal_plan_recurring/hooks/useInsertRecurringMealPlans";
+import Swal from "sweetalert2";
 
 export const RecurringSetting = () => {
   const { data, loading } = useRecurringMealPlans();
@@ -96,6 +97,19 @@ export const RecurringSetting = () => {
     });
 
     await insertMutation.mutateAsync({ mapping });
+
+    const theme = localStorage.getItem("theme") || "light";
+    const isDark = theme === "dark";
+
+    Swal.fire({
+      icon: "success",
+      title: "روتین غذایی ذخیره شد",
+      text: "تغییرات با موفقیت ثبت شد.",
+      timer: 1800,
+      showConfirmButton: false,
+      background: isDark ? "#111A2C" : "#E9EFFB",
+      color: isDark ? "#E9EFFB" : "#111A2C",
+    });
   };
 
   if (loading) {

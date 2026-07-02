@@ -225,3 +225,22 @@ class UserRepository(IUserRepository):
         )
         await self.session.execute(stmt)
         await self.session.commit()
+
+
+    async def get_by_branch_id(self, branch_id: str) -> List[UserEntity]:
+        stmt = select(User).where(User.branch_id == branch_id)
+        result = await self.session.execute(stmt)
+        rows = result.scalars().all()
+
+        return [
+            UserEntity(
+                public_id=r.public_id,
+                phone=r.phone,
+                username=r.username,
+                role=r.role,
+                branch_id=r.branch_id,
+                branch_role=r.branch_role,
+                is_blocked=r.is_blocked,
+            )
+            for r in rows
+        ]

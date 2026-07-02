@@ -16,15 +16,11 @@ class DeleteVoucher:
         self.meal_plan_repo = meal_plan_repo
         self.time_policy_repo = time_policy_repo
 
-    async def execute(self, voucher_id: int, user_public_id: str):
-        voucher = await self.voucher_repo.get_by_id(voucher_id)
-        if not voucher:
-            raise ValueError("Voucher not found")
+    async def execute(self, meal_plan_id: int, user_public_ids: list[str]):
+        if not meal_plan_id:
+            raise ValueError("Meal plan id is required")
 
-        if voucher.user_public_id != user_public_id:
-            raise ValueError("Voucher does not belong to the user")
-
-        meal_plan = await self.meal_plan_repo.get_by_id(voucher.meal_plan_id)
+        meal_plan = await self.meal_plan_repo.get_by_id(meal_plan_id)
         if not meal_plan:
             raise ValueError("Meal plan not found")
 
@@ -45,4 +41,4 @@ class DeleteVoucher:
             if now_utc > cutoff_dt:
                 raise ValueError("Cutoff time passed")
 
-        await self.voucher_repo.delete_one(voucher_id)
+        await self.voucher_repo.delete_many(meal_plan_id, user_public_ids)

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MealPlanHeader } from "../components/MealPlanHeader";
 import { MealPlanBody } from "../components/MealPlanBody";
+import { MealPlanFooter } from "../components/MealPlanFooter";
 
 export const MealPlanPage = () => {
   const [selectedDate, setSelectedDate] = useState(
@@ -13,8 +14,8 @@ export const MealPlanPage = () => {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
-
       <MealPlanBody selectedDate={selectedDate} />
+      <MealPlanFooter selectedDate={selectedDate}/>
     </div>
   );
 };

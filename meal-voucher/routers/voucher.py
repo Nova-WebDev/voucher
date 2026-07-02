@@ -57,8 +57,8 @@ async def delete_voucher(
         uc = get_delete_voucher_uc(session)
 
         await uc.execute(
-            voucher_id=data.voucher_id,
-            user_public_id=_user["public_id"],
+            meal_plan_id=data.meal_plan_id,
+            user_public_ids=[_user["public_id"]],
         )
 
         return {"status": "deleted"}
@@ -177,14 +177,14 @@ async def delete_voucher_branch(
             validate_uc = get_validate_branch_users_uc(session)
             await validate_uc.execute(
                 requester_public_id=_user["public_id"],
-                target_public_ids=[data.public_id],
+                target_public_ids=data.public_ids,
             )
 
         uc = get_delete_voucher_uc(session)
 
         await uc.execute(
-            voucher_id=data.voucher_id,
-            user_public_id=data.public_id,
+            meal_plan_id=data.meal_plan_id,
+            user_public_ids=data.public_ids,
         )
 
         return {"status": "deleted"}

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class DeleteVoucherBranchRequest(BaseModel):
-    voucher_id: int
-    public_id: str
+    meal_plan_id: int
+    public_ids: List[str]

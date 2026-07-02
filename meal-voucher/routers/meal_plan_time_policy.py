@@ -24,7 +24,7 @@ router = APIRouter(prefix="/meal-plan-time-policy", tags=["meal_plan_time_policy
 @router.get("/list", response_model=List[MealPlanTimePolicyItem])
 async def list_time_policies(
     _user=Depends(get_current_user),
-    session: AsyncSession = Depends(get_session),
+    session: AsyncSession = Depends(    get_session),
 ):
     try:
         uc = get_list_time_policies_uc(session)

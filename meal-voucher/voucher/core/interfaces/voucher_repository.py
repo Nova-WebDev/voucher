@@ -14,7 +14,7 @@ class IVoucherRepository(ABC):
         pass
 
     @abstractmethod
-    async def delete_one(self, voucher_id: int) -> None:
+    async def delete_many(self, meal_plan_id: int, public_ids: List[str]) -> None:
         pass
 
     @abstractmethod
